@@ -1,0 +1,41 @@
+{
+  "kind": "collectionType",
+  "collectionName": "shippingdetails",
+  "info": {
+    "singularName": "shippingdetail",
+    "pluralName": "shippingdetails",
+    "displayName": "shippingdetail"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "address": {
+      "type": "string",
+      "required": true
+    },
+    "city": {
+      "type": "string",
+      "required": true
+    },
+    "state": {
+      "type": "string",
+      "required": true
+    },
+    "phone_number": {
+      "required": true,
+      "max": 13,
+      "min": 11,
+      "type": "integer"
+    },
+    "is_phone_verified": {
+      "type": "boolean",
+      "required": true
+    },
+    "full_name": {
+      "type": "string",
+      "required": true
+    }
+  }
+}
