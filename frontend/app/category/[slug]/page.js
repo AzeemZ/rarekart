@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import Wrapper from "@/components/Wrapper";
 import ProductCard from "@/components/ProductCard";
-import { fetchDataFromApi } from "@/utils/api";
+import { fetcher } from "@/utils/api";
 import useSWR from "swr";
 import { useRouter } from "next/router";
 const maxResult = 3;
@@ -17,7 +17,7 @@ const Category = ({ category, products, slug }) => {
 
   const { data, error, isLoading } = useSWR(
     `/api/products?populate=*&[filters][categories][slug][$eq]=${slug}&pagination[page]=${pageIndex}&pagination[pageSize]=${maxResult}`,
-    fetchDataFromApi,
+    fetcher,
     {
       fallbackData: products,
     }

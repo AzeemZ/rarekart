@@ -1,15 +1,16 @@
+"use client";
 import { useState, useEffect } from "react";
 import Wrapper from "./Wrapper";
 
 import Link from "next/link";
 import Menu from "./Menu";
-import MenuMobile from "./MenuMobile";
+import MobileMenu from "./MobileMenu";
 
 import { IoMdHeartEmpty } from "react-icons/io";
 import { BsCart } from "react-icons/bs";
 import { BiMenuAltRight } from "react-icons/bi";
 import { VscChromeClose } from "react-icons/vsc";
-import { fetchDataFromApi } from "@/utils/api";
+import { fetcher } from "@/utils/api";
 import { useSelector } from "react-redux";
 
 export default function Header() {
@@ -46,7 +47,7 @@ export default function Header() {
   }, []);
 
   const fetchCategories = async () => {
-    const { data } = await fetchDataFromApi("/api/categories?populate=*");
+    const { data } = await fetcher("/api/categories?populate=*");
     setCategories(data);
   };
 
@@ -66,7 +67,7 @@ export default function Header() {
         />
 
         {mobileMenu && (
-          <MenuMobile
+          <MobileMenu
             showCatMenu={showCatMenu}
             setShowCatMenu={setShowCatMenu}
             setMobileMenu={setMobileMenu}

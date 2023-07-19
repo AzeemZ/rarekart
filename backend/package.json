@@ -14,7 +14,7 @@
     "@strapi/plugin-users-permissions": "4.11.4",
     "@strapi/provider-email-sendgrid": "^4.11.4",
     "@strapi/provider-upload-cloudinary": "^4.11.4",
-    "@strapi/strapi": "4.11.4",
+    "@strapi/strapi": "4.11.7",
     "pg": "8.8.0"
   },
   "author": {

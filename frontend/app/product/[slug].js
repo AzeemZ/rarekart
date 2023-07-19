@@ -4,7 +4,7 @@ import { IoMdHeartEmpty } from "react-icons/io";
 import Wrapper from "@/components/Wrapper";
 import ProductDetailsCarousel from "@/components/ProductDetailsCarousel";
 import RelatedProducts from "@/components/RelatedProducts";
-import { fetchDataFromApi } from "@/utils/api";
+import { fetcher } from "@/utils/api";
 import { getDiscountedPricePercentage } from "@/utils/helper";
 import ReactMarkdown from "react-markdown";
 import { useSelector, useDispatch } from "react-redux";
@@ -172,7 +172,7 @@ const ProductDetails = ({ product, products }) => {
 export default ProductDetails;
 
 export async function getStaticPaths() {
-  const products = await fetchDataFromApi("/api/products?populate=*");
+  const products = await fetcher("/api/products?populate=*");
   const paths = products?.data?.map((p) => ({
     params: {
       slug: p.attributes.slug,
@@ -186,10 +186,10 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params: { slug } }) {
-  const product = await fetchDataFromApi(
+  const product = await fetcher(
     `/api/products?populate=*&filters[slug][$eq]=${slug}`
   );
-  const products = await fetchDataFromApi(
+  const products = await fetcher(
     `/api/products?populate=*&[filters][slug][$ne]=${slug}`
   );
 

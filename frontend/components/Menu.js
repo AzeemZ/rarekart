@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BsChevronDown } from "react-icons/bs";
+import { Fragment } from "react";
 
 const data = [
   { id: 1, name: "Home", url: "/" },
@@ -20,7 +21,7 @@ export default function Menu({ showCatMenu, setShowCatMenu, categories }) {
     <ul className="hidden md:flex items-center gap-8 font-medium text-black">
       {data.map((item) => {
         return (
-          <React.Fragment key={item.id}>
+          <Fragment key={item.id}>
             {!!item?.subMenu ? (
               <li
                 className="cursor-pointer flex items-center gap-2 relative"
@@ -56,7 +57,7 @@ export default function Menu({ showCatMenu, setShowCatMenu, categories }) {
                 <Link href={item?.url}>{item.name}</Link>
               </li>
             )}
-          </React.Fragment>
+          </Fragment>
         );
       })}
     </ul>

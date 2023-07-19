@@ -1,5 +1,3 @@
-"use client";
-
 export default function Wrapper({ children, className }) {
   return (
     <div

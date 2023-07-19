@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import { FaFacebookF, FaTwitter, FaYoutube, FaInstagram } from "react-icons/fa";
 import Wrapper from "./Wrapper";
