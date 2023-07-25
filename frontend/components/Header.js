@@ -1,19 +1,25 @@
 "use client";
 import { useState, useEffect } from "react";
-import Wrapper from "./Wrapper";
-
 import Link from "next/link";
-import Menu from "./Menu";
-import MobileMenu from "./MobileMenu";
+import { useSelector, useDispatch } from "react-redux";
 
 import { IoMdHeartEmpty } from "react-icons/io";
 import { BsCart } from "react-icons/bs";
 import { BiMenuAltRight } from "react-icons/bi";
 import { VscChromeClose } from "react-icons/vsc";
+
 import { fetcher } from "@/utils/api";
-import { useSelector } from "react-redux";
+import { getToken } from "@/utils/helpers";
+import { fetchUser } from "@/utils/api";
+import { addUserOnInitialLoad } from "@/store/userSlice";
+import Wrapper from "./Wrapper";
+import Menu from "./Menu";
+import MobileMenu from "./MobileMenu";
+import AuthMenu from "./AuthMenu";
 
 export default function Header() {
+  const dispatch = useDispatch();
+  const token = getToken();
   const [mobileMenu, setMobileMenu] = useState(false);
   const [showCatMenu, setShowCatMenu] = useState(false);
   const [show, setShow] = useState("translate-y-0");
@@ -21,6 +27,7 @@ export default function Header() {
   const [categories, setCategories] = useState(null);
 
   const { cartItems } = useSelector((state) => state.cart);
+  const { user } = useSelector((state) => state.user);
 
   const controlNavbar = () => {
     if (window.scrollY > 200) {
@@ -34,6 +41,12 @@ export default function Header() {
     }
     setLastScrollY(window.scrollY);
   };
+
+  useEffect(() => {
+    if (token && !user.id) {
+      fetchUser().then((user) => dispatch(addUserOnInitialLoad(user)));
+    }
+  }, []);
 
   useEffect(() => {
     window.addEventListener("scroll", controlNavbar);
@@ -97,6 +110,8 @@ export default function Header() {
             </div>
           </Link>
           {/* Icon end */}
+
+          <AuthMenu user={user} />
 
           {/* Mobile icon start */}
           <div className="w-8 md:w-12 h-8 md:h-12 rounded-full flex md:hidden justify-center items-center hover:bg-black/[0.05] cursor-pointer relative -mr-2">

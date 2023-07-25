@@ -1,27 +1,35 @@
 "use client";
+import useSWR from "swr";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Wrapper from "@/components/Wrapper";
 import ProductCard from "@/components/ProductCard";
 import { fetcher } from "@/utils/api";
-import useSWR from "swr";
-import { useRouter } from "next/router";
-const maxResult = 3;
 
-const Category = ({ category, products, slug }) => {
+export async function generateStaticParams() {
+  const category = await fetcher("/api/categories?populate=*");
+
+  return category?.data?.map((c) => ({
+    slug: c.attributes.slug,
+  }));
+}
+
+export default function Category({ params: { slug } }) {
+  const maxResult = 3;
+  const searchParams = useSearchParams();
   const [pageIndex, setPageIndex] = useState(1);
-  const { query } = useRouter();
+  const { data: category } = useSWR(
+    `/api/categories?filters[slug][$eq]=${slug}`,
+    fetcher
+  );
+  const { data, error, isLoading } = useSWR(
+    `/api/products?populate=*&[filters][categories][slug][$eq]=${slug}&pagination[page]=${pageIndex}&pagination[pageSize]=${maxResult}`,
+    fetcher
+  );
 
   useEffect(() => {
     setPageIndex(1);
-  }, [query]);
-
-  const { data, error, isLoading } = useSWR(
-    `/api/products?populate=*&[filters][categories][slug][$eq]=${slug}&pagination[page]=${pageIndex}&pagination[pageSize]=${maxResult}`,
-    fetcher,
-    {
-      fallbackData: products,
-    }
-  );
+  }, [searchParams]);
 
   return (
     <div className="w-full md:py-20 relative">
@@ -74,38 +82,4 @@ const Category = ({ category, products, slug }) => {
       </Wrapper>
     </div>
   );
-};
-
-export default Category;
-
-export async function getStaticPaths() {
-  const category = await fetchDataFromApi("/api/categories?populate=*");
-  const paths = category?.data?.map((c) => ({
-    params: {
-      slug: c.attributes.slug,
-    },
-  }));
-
-  return {
-    paths,
-    fallback: false,
-  };
-}
-
-// `getStaticPaths` requires using `getStaticProps`
-export async function getStaticProps({ params: { slug } }) {
-  const category = await fetchDataFromApi(
-    `/api/categories?filters[slug][$eq]=${slug}`
-  );
-  const products = await fetchDataFromApi(
-    `/api/products?populate=*&[filters][categories][slug][$eq]=${slug}&pagination[page]=1&pagination[pageSize]=${maxResult}`
-  );
-
-  return {
-    props: {
-      category,
-      products,
-      slug,
-    },
-  };
 }

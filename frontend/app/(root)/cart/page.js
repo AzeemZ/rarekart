@@ -5,14 +5,14 @@ import Link from "next/link";
 import Wrapper from "@/components/Wrapper";
 import CartItem from "@/components/CartItem";
 import { useSelector } from "react-redux";
-
 import { makePaymentRequest } from "@/utils/api";
 import { loadStripe } from "@stripe/stripe-js";
+
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 );
 
-export default function Cart() {
+export default function cart() {
   const [loading, setLoading] = useState(false);
   const { cartItems } = useSelector((state) => state.cart);
 
@@ -102,6 +102,7 @@ export default function Cart() {
           <div className="flex-[2] flex flex-col items-center pb-[50px] md:-mt-14">
             <Image
               src="/empty-cart.jpg"
+              alt="Empty Cart"
               width={300}
               height={300}
               className="w-[300px] md:w-[400px]"
