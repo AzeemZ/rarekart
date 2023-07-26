@@ -5,12 +5,12 @@ import { IoMdHeartEmpty } from "react-icons/io";
 import ReactMarkdown from "react-markdown";
 import { useDispatch } from "react-redux";
 import useSWR from "swr";
-import { useState } from "react";
 import Wrapper from "@/components/Wrapper";
 import ProductDetailsCarousel from "@/components/ProductDetailsCarousel";
 import RelatedProducts from "@/components/RelatedProducts";
 import { fetcher } from "@/utils/api";
 import { addToCart } from "@/store/cartSlice";
+import { addToWishlist } from "@/store/wishlistSlice";
 
 export async function generateStaticParams() {
   const products = await fetcher("/api/products?populate=*");
@@ -21,8 +21,6 @@ export async function generateStaticParams() {
 }
 
 export default function Product({ params: { slug } }) {
-  const [selectedSize, setSelectedSize] = useState();
-  const [showError, setShowError] = useState(false);
   const dispatch = useDispatch();
   const { data: product } = useSWR(
     `/api/products?populate=*&filters[slug][$eq]=${slug}`,
@@ -34,8 +32,8 @@ export default function Product({ params: { slug } }) {
   );
   const p = product?.data?.[0]?.attributes;
 
-  const notify = () => {
-    toast.success("Success. Check your cart!", {
+  const notify = (msg) => {
+    toast.success(msg, {
       position: "bottom-right",
       autoClose: 5000,
       hideProgressBar: false,
@@ -89,19 +87,25 @@ export default function Product({ params: { slug } }) {
                     oneQuantityPrice: p?.price,
                   })
                 );
-                notify();
+                notify("Success. Check your cart!");
               }}
             >
               Add to Cart
             </button>
             {/* ADD TO CART BUTTON END */}
 
-            {/* WHISHLIST BUTTON START */}
-            <button className="w-full py-4 rounded-full border border-black text-lg font-medium transition-transform active:scale-95 flex items-center justify-center gap-2 hover:opacity-75 mb-10">
-              Whishlist
+            {/* WISHLIST BUTTON START */}
+            <button
+              className="w-full py-4 rounded-full border border-black text-lg font-medium transition-transform active:scale-95 flex items-center justify-center gap-2 hover:opacity-75 mb-10"
+              onClick={() => {
+                dispatch(addToWishlist(product?.data?.[0]));
+                notify("Added to your wishlist!");
+              }}
+            >
+              Wishlist
               <IoMdHeartEmpty size={20} />
             </button>
-            {/* WHISHLIST BUTTON END */}
+            {/* WISHLIST BUTTON END */}
 
             <div>
               <div className="text-lg font-bold mb-5">Product Details</div>

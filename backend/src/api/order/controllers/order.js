@@ -13,7 +13,7 @@ const { createCoreController } = require("@strapi/strapi").factories;
 
 module.exports = createCoreController("api::order.order", ({ strapi }) => ({
   async create(ctx) {
-    const { products } = ctx.request.body;
+    const { products, user, total } = ctx.request.body;
     try {
       const lineItems = await Promise.all(
         products.map(async (product) => {
@@ -27,7 +27,7 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
               product_data: {
                 name: item.name,
               },
-              unit_amount: Math.round(item.price * 100),
+              unit_amount: Math.round(item.price * 2.9),
             },
             quantity: product.quantity,
           };
@@ -43,9 +43,18 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
         line_items: lineItems,
       });
 
-      await strapi
+      const order = await strapi
         .service("api::order.order")
-        .create({ data: { products, stripeId: session.id } });
+        .create({ data: { products, stripeId: session.id, user, total } });
+
+      await strapi.plugins["email"].services.email.send({
+        to: user.email,
+        from: "azeem3z123@gmail.com",
+        replyTo: "azeem3z123@gmail.com",
+        subject: "Purchase Confirmation - Order #" + order.id,
+        text: `Thank you for your purchase! Your order (#${order.id}) is confirmed.`,
+        html: `<p>Thank you for your purchase! Your order (#${order.id}) is confirmed.</p>`,
+      });
 
       return { stripeSession: session };
     } catch (error) {
