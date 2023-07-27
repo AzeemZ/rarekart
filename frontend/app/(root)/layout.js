@@ -1,12 +1,12 @@
 "use client";
 import "../globals.css";
-import { Inter } from "next/font/google";
+import { Jost } from "next/font/google";
 import { Provider } from "react-redux";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import store from "@/store/store";
 
-const inter = Inter({ subsets: ["latin"] });
+const jost = Jost({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Root Layout",
@@ -16,7 +16,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={jost.className}>
         <Provider store={store}>
           <Header />
           {children}

@@ -16,7 +16,9 @@ export default function ProductCard({ data: { attributes: p, id } }) {
       <div className="p-4 text-black/[0.9]">
         <h2 className="text-lg font-medium">{p?.name}</h2>
         <div className="flex items-center text-black/[0.5]">
-          <p className="mr-2 text-lg font-semibold">&#8377;{p?.price}</p>
+          <p className="mr-2 text-lg font-semibold">
+            Rs. {p?.price.toLocaleString()}/-
+          </p>
         </div>
       </div>
     </Link>

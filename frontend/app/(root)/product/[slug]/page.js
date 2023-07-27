@@ -1,6 +1,6 @@
 "use client";
 import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import { IoMdHeartEmpty } from "react-icons/io";
 import ReactMarkdown from "react-markdown";
 import { useDispatch } from "react-redux";
@@ -11,6 +11,7 @@ import RelatedProducts from "@/components/RelatedProducts";
 import { fetcher } from "@/utils/api";
 import { addToCart } from "@/store/cartSlice";
 import { addToWishlist } from "@/store/wishlistSlice";
+import Notify from "@/components/Notify";
 
 export async function generateStaticParams() {
   const products = await fetcher("/api/products?populate=*");
@@ -31,19 +32,6 @@ export default function Product({ params: { slug } }) {
     fetcher
   );
   const p = product?.data?.[0]?.attributes;
-
-  const notify = (msg) => {
-    toast.success(msg, {
-      position: "bottom-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
-  };
 
   return (
     <div className="w-full md:py-20">
@@ -66,7 +54,7 @@ export default function Product({ params: { slug } }) {
             {/* PRODUCT PRICE */}
             <div className="flex items-center">
               <p className="mr-2 text-lg font-semibold">
-                MRP : &#8377;{p?.price}
+                MRP : Rs. {p?.price?.toLocaleString()}/-
               </p>
             </div>
 
@@ -87,7 +75,7 @@ export default function Product({ params: { slug } }) {
                     oneQuantityPrice: p?.price,
                   })
                 );
-                notify("Success. Check your cart!");
+                Notify("Success. Check your cart!");
               }}
             >
               Add to Cart
@@ -99,7 +87,7 @@ export default function Product({ params: { slug } }) {
               className="w-full py-4 rounded-full border border-black text-lg font-medium transition-transform active:scale-95 flex items-center justify-center gap-2 hover:opacity-75 mb-10"
               onClick={() => {
                 dispatch(addToWishlist(product?.data?.[0]));
-                notify("Added to your wishlist!");
+                Notify("Added to your wishlist!");
               }}
             >
               Wishlist
