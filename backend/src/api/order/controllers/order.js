@@ -35,7 +35,7 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
       );
 
       const session = await stripe.checkout.sessions.create({
-        // shipping_address_collection: { allowed_countries: ["US"] },
+        shipping_address_collection: { allowed_countries: ["PK"] },
         payment_method_types: ["card"],
         mode: "payment",
         success_url: process.env.CLIENT_URL + `/success`,
@@ -49,8 +49,8 @@ module.exports = createCoreController("api::order.order", ({ strapi }) => ({
 
       await strapi.plugins["email"].services.email.send({
         to: user.email,
-        from: "azeem3z123@gmail.com",
-        replyTo: "azeem3z123@gmail.com",
+        from: process.env.SENDGRID_DEFAULT_FROM,
+        replyTo: process.env.SENDGRID_DEFAULT_REPLY_TO,
         subject: "Purchase Confirmation - Order #" + order.id,
         text: `Thank you for your purchase! Your order (#${order.id}) is confirmed.`,
         html: `<p>Thank you for your purchase! Your order (#${order.id}) is confirmed.</p>`,

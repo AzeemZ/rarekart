@@ -12,6 +12,10 @@ import { fetcher } from "@/utils/api";
 import { addToCart } from "@/store/cartSlice";
 import { addToWishlist } from "@/store/wishlistSlice";
 import Notify from "@/components/Notify";
+import RelatedProductsSkeleton from "@/components/Skeletons/RelatedProductsSkeleton";
+import ProductDescriptionSkeleton from "@/components/Skeletons/ProductDescriptionSkeleton";
+import CategoryLineSkeleton from "@/components/Skeletons/CategoryLineSkeleton";
+import ProductImageSkeleton from "@/components/Skeletons/ProductImageSkeleton";
 
 export async function generateStaticParams() {
   const products = await fetcher("/api/products?populate=*");
@@ -23,11 +27,11 @@ export async function generateStaticParams() {
 
 export default function Product({ params: { slug } }) {
   const dispatch = useDispatch();
-  const { data: product } = useSWR(
+  const { data: product, isLoading: isProductLoading } = useSWR(
     `/api/products?populate=*&filters[slug][$eq]=${slug}`,
     fetcher
   );
-  const { data: products } = useSWR(
+  const { data: products, isLoading: isProductsLoading } = useSWR(
     `/api/products?populate=*&[filters][slug][$ne]=${slug}`,
     fetcher
   );
@@ -39,8 +43,12 @@ export default function Product({ params: { slug } }) {
       <Wrapper>
         <div className="flex flex-col lg:flex-row md:px-10 gap-[50px] lg:gap-[100px]">
           {/* left column start */}
-          <div className="w-full md:w-auto flex-[1.5] max-w-[500px] lg:max-w-full mx-auto lg:mx-0">
-            <ProductDetailsCarousel images={p?.image?.data} />
+          <div className="w-full flex-[1.5] max-w-[500px] lg:max-w-full mx-auto lg:mx-0">
+            {isProductLoading ? (
+              <ProductImageSkeleton />
+            ) : (
+              <ProductDetailsCarousel images={p?.image?.data} />
+            )}
           </div>
           {/* left column end */}
 
@@ -48,7 +56,7 @@ export default function Product({ params: { slug } }) {
           <div className="flex-[1] py-3">
             {/* PRODUCT TITLE */}
             <div className="text-[34px] font-semibold mb-2 leading-tight">
-              {p?.name}
+              {isProductLoading ? <CategoryLineSkeleton /> : p?.name}
             </div>
 
             {/* PRODUCT PRICE */}
@@ -97,15 +105,23 @@ export default function Product({ params: { slug } }) {
 
             <div>
               <div className="text-lg font-bold mb-5">Product Details</div>
-              <div className="markdown text-md mb-5">
-                <ReactMarkdown>{p?.description}</ReactMarkdown>
-              </div>
+              {isProductLoading ? (
+                <ProductDescriptionSkeleton />
+              ) : (
+                <div className="markdown text-md mb-5">
+                  <ReactMarkdown>{p?.description}</ReactMarkdown>
+                </div>
+              )}
             </div>
           </div>
           {/* right column end */}
         </div>
 
-        <RelatedProducts products={products} />
+        {isProductsLoading ? (
+          <RelatedProductsSkeleton />
+        ) : (
+          <RelatedProducts products={products} />
+        )}
       </Wrapper>
     </div>
   );

@@ -16,7 +16,7 @@ export default function AuthMenu({ user }) {
       <div className="flex flex-1 items-center justify-end space-x-3">
         <Link
           href="/login"
-          className="text-md font-medium text-gray-700 hover:text-gray-800"
+          className="hidden sm:block text-md font-medium text-gray-700 hover:text-gray-800"
         >
           Login
         </Link>
@@ -48,8 +48,12 @@ export default function AuthMenu({ user }) {
                       <span className="sr-only">Open user menu</span>
                       <img
                         className="h-8 w-8 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt=""
+                        src={
+                          !user.avatar_url
+                            ? "/avatar-placeholder.png"
+                            : user.avatar_url
+                        }
+                        alt="Avatar"
                       />
                     </Menu.Button>
                   </div>
@@ -65,28 +69,28 @@ export default function AuthMenu({ user }) {
                     <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                       <Menu.Item>
                         {({ active }) => (
-                          <a
-                            href="#"
+                          <Link
+                            href="/my-profile"
                             className={classNames(
                               active ? "bg-gray-100" : "",
                               "block px-4 py-2 text-sm text-gray-700"
                             )}
                           >
                             My Profile
-                          </a>
+                          </Link>
                         )}
                       </Menu.Item>
                       <Menu.Item>
                         {({ active }) => (
-                          <a
-                            href="#"
+                          <Link
+                            href="/my-orders"
                             className={classNames(
                               active ? "bg-gray-100" : "",
                               "block px-4 py-2 text-sm text-gray-700"
                             )}
                           >
                             My Orders
-                          </a>
+                          </Link>
                         )}
                       </Menu.Item>
                       <Menu.Item>

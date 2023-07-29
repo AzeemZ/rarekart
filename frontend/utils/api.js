@@ -4,15 +4,13 @@ import { getToken } from "./helpers";
 const token = getToken();
 
 export const fetcher = async (endpoint) => {
-  const options = {
+  const res = await fetch(`${API_URL}${endpoint}`, {
     method: "GET",
     headers: {
       Authorization: `${BEARER} ${STRAPI_API_TOKEN}`,
     },
-    next: { revalidate: 1000 },
-  };
-
-  const res = await fetch(`${API_URL}${endpoint}`, options);
+    next: { revalidate: 86400 },
+  });
   const data = await res.json();
 
   return data;
@@ -28,6 +26,19 @@ export const fetchUser = async () => {
   const data = await res.json();
 
   return data;
+};
+
+export const fetchUserOrders = async (endpoint) => {
+  const res = await fetch(`${API_URL}${endpoint}`, {
+    method: "GET",
+    headers: {
+      Authorization: `${BEARER} ${token}`,
+    },
+    next: { revalidate: 86400 },
+  });
+  const data = await res.json();
+
+  return data.data;
 };
 
 export const makePaymentRequest = async (endpoint, payload) => {

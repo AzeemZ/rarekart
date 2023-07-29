@@ -1,12 +1,14 @@
 import { Fragment } from "react";
 import Link from "next/link";
 import { BsChevronDown } from "react-icons/bs";
+import { useSelector, useDispatch } from "react-redux";
+import { removeUser } from "@/store/userSlice";
 
 const data = [
   { id: 1, name: "Home", url: "/" },
-  { id: 2, name: "About", url: "/about" },
+  { id: 2, name: "About", url: "/" },
   { id: 3, name: "Categories", subMenu: true },
-  { id: 4, name: "Contact", url: "/contact" },
+  { id: 4, name: "Contact", url: "/" },
 ];
 
 export default function MobileMenu({
@@ -15,6 +17,9 @@ export default function MobileMenu({
   setMobileMenu,
   categories,
 }) {
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.user);
+
   return (
     <ul className="flex flex-col md:hidden font-bold absolute top-[50px] left-0 w-full h-[calc(100vh-50px)] bg-white border-t text-black">
       {data.map((item) => {
@@ -64,6 +69,37 @@ export default function MobileMenu({
           </Fragment>
         );
       })}
+      {!user.id ? (
+        <li className="py-4 px-5 border-b">
+          <Link href="/login" onClick={() => setMobileMenu(false)}>
+            Login
+          </Link>
+        </li>
+      ) : (
+        <>
+          <li className="py-4 px-5 border-b">
+            <Link href="/my-profile" onClick={() => setMobileMenu(false)}>
+              My Profile
+            </Link>
+          </li>
+          <li className="py-4 px-5 border-b">
+            <Link href="/my-orders" onClick={() => setMobileMenu(false)}>
+              My Orders
+            </Link>
+          </li>
+          <li className="py-4 px-5 border-b">
+            <Link
+              href="/"
+              onClick={() => {
+                setMobileMenu(false);
+                dispatch(removeUser());
+              }}
+            >
+              Logout
+            </Link>
+          </li>
+        </>
+      )}
     </ul>
   );
 }

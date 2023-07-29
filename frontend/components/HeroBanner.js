@@ -1,5 +1,6 @@
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
+import TextButton from "./Buttons/TextButton";
 
 export default function HeroBanner() {
   return (
@@ -11,33 +12,66 @@ export default function HeroBanner() {
         showIndicators={true}
         showStatus={false}
       >
-        <div>
+        <div className="relative">
           <img
-            src="/slide-1.png"
+            src="/slide-01.jpg"
             className="aspect-[16/10] md:aspect-auto object-cover"
           />
-          <div className="px-[15px] md:px-[40px] py-[10px] md:py-[25px] font-oswald bg-white absolute bottom-[25px] md:bottom-[75px] left-0 text-black/[0.9] text-[15px] md:text-[30px] uppercase font-medium cursor-pointer hover:opacity-90">
-            Shop now
+          <div className="absolute left-5 md:left-8 sm:left-16 top-1/2 transform -translate-y-1/2 text-black/70 text-left space-y-2 sm:space-y-6">
+            <div>
+              <span className="bg-gray-700 text-gray-100 text-xs md:text-base sm:text-xs p-1 rounded-md">
+                50% off
+              </span>
+            </div>
+            <div>
+              <span className="text-2xl sm:text-5xl md:text-5xl lg:text-7xl my-4">
+                New Cocktail <br />
+                Dresses
+              </span>
+            </div>
+            <TextButton value="Shop Now" />
           </div>
         </div>
 
-        <div>
+        <div className="relative">
           <img
-            src="/slide-2.png"
+            src="/slide-02.jpg"
             className="aspect-[16/10] md:aspect-auto object-cover"
           />
-          <div className="px-[15px] md:px-[40px] py-[10px] md:py-[25px] font-oswald bg-white absolute bottom-[25px] md:bottom-[75px] left-0 text-black/[0.9] text-[15px] md:text-[30px] uppercase font-medium cursor-pointer hover:opacity-90">
-            Shop now
+          <div className="absolute right-5 md:right-8 sm:right-16 top-1/2 transform -translate-y-1/2 text-black/70 text-right space-y-2 sm:space-y-6">
+            <div>
+              <span className="bg-gray-700 text-gray-100 text-xs md:text-base sm:text-xs p-1 rounded-md">
+                Spring Revolution
+              </span>
+            </div>
+            <div>
+              <span className="text-2xl sm:text-5xl md:text-5xl lg:text-7xl my-4">
+                Night Summer <br />
+                Dresses
+              </span>
+            </div>
+            <TextButton value="Shop Now" addtionalClass="absolute right-0" />
           </div>
         </div>
 
-        <div>
+        <div className="relative">
           <img
-            src="/slide-3.png"
+            src="/slide-03.jpg"
             className="aspect-[16/10] md:aspect-auto object-cover"
           />
-          <div className="px-[15px] md:px-[40px] py-[10px] md:py-[25px] font-oswald bg-white absolute bottom-[25px] md:bottom-[75px] left-0 text-black/[0.9] text-[15px] md:text-[30px] uppercase font-medium cursor-pointer hover:opacity-90">
-            Shop now
+          <div className="absolute left-5 md:left-8 sm:left-16 top-1/2 transform -translate-y-1/2 text-black/70 text-left space-y-2 sm:space-y-6">
+            <div>
+              <span className="bg-gray-700 text-gray-100 text-xs md:text-base sm:text-xs p-1 rounded-md">
+                Spring promo
+              </span>
+            </div>
+            <div>
+              <span className="text-2xl sm:text-5xl md:text-5xl lg:text-7xl my-4">
+                The Weekend <br />
+                Promotions
+              </span>
+            </div>
+            <TextButton value="Shop Now" />
           </div>
         </div>
       </Carousel>

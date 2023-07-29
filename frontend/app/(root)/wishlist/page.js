@@ -7,7 +7,6 @@ import { ToastContainer } from "react-toastify";
 import LeftArrow from "@/public/icons/LeftArrow";
 import Button from "@/components/Buttons/Button";
 import GhostButton from "@/components/Buttons/GhostButton";
-import Notify from "@/components/Notify";
 import { removeFromWishlist, clearWishlist } from "@/store/wishlistSlice";
 import { addToCart } from "@/store/cartSlice";
 
@@ -111,7 +110,6 @@ export default function Wishlist() {
                                   oneQuantityPrice: item.attributes.price,
                                 })
                               );
-                              Notify("Success. Check your cart!");
                             }}
                           />
                         </td>
@@ -128,7 +126,6 @@ export default function Wishlist() {
                                   oneQuantityPrice: item.attributes.price,
                                 })
                               );
-                              Notify("Success. Check your cart!");
                             }}
                             extraClass="sm:hidden mb-4 whitespace-nowrap"
                           />
