@@ -8,11 +8,6 @@ import store from "@/store/store";
 
 const jost = Jost({ subsets: ["latin"] });
 
-export const metadata = {
-  title: "Root Layout",
-  description: "Root layout of the app",
-};
-
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
