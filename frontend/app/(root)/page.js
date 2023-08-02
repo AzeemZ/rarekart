@@ -78,7 +78,7 @@ export default function Home() {
             </span>
           </div>
           <div className="w-full app-x-padding flex justify-center">
-            <img src="/ourShop.png" alt="Our Shop" />
+            <img src="/ourshop.png" alt="Our Shop" />
           </div>
         </section>
       </Wrapper>
