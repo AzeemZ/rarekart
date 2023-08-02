@@ -9,11 +9,6 @@ import { getToken } from "@/utils/helpers";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata = {
-  title: "Auth",
-  description: "Auth layout of the app",
-};
-
 export default function RootLayout({ children }) {
   const router = useRouter();
   const token = getToken();
